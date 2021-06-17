@@ -1,9 +1,13 @@
 package com.msilva.cursoSpring.resources;
 
 import com.msilva.cursoSpring.domain.Categoria;
+import com.msilva.cursoSpring.services.CategoriaService;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,19 +21,34 @@ import org.springframework.web.bind.annotation.RestController;
 public class CategoriaResource {
 
     /**
-     * Teste de listagem de categorias.
+     * Provê os serviços para {@code Categoria}.
+     */
+    @Autowired
+    private CategoriaService service;
+
+    /**
+     * Retorna todas as {@code Categoria} cadastradas.
      *
-     * @return Uma lista com as categorias de teste.
+     * @return Uma lista com todas as {@code Categoria} cadastradas.
      */
     @GetMapping
-    public List<Categoria> listar() {
-        Categoria cat1 = new Categoria(Long.parseLong("1"), "Informática");
-        Categoria cat2 = new Categoria(Long.parseLong("2"), "Mercado");
+    public ResponseEntity buscaTodasCategorias() {
+        List<Categoria> categorias = service.buscaTodasCategorias();
 
-        ArrayList<Categoria> categorias = new ArrayList<>();
-        categorias.add(cat1);
-        categorias.add(cat2);
+        return ResponseEntity.ok(categorias);
+    }
 
-        return categorias;
+    /**
+     * A {@code Categoria} com {@code ID}.
+     *
+     * @param id ID da {@code Categoria} buscada.
+     *
+     * @return A {@code Categoria} com o {@code ID}.
+     */
+    @GetMapping(value = "/{id}")
+    public ResponseEntity buscaCategoriaPorID(@PathVariable Long id) {
+        Categoria categoria = service.buscaCategoriaPorID(id);
+
+        return ResponseEntity.ok(categoria);
     }
 }
