@@ -3,20 +3,21 @@ package com.msilva.cursoSpring.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 /**
- * Classe que representa {@code Categoria}.
+ * Representa um Produto.
  *
  * @author Mateus
  */
 @Entity
-public class Categoria implements Serializable {
+public class Produto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,15 +27,21 @@ public class Categoria implements Serializable {
 
     private String nome;
 
-    @ManyToMany(mappedBy = "categorias")
-    private List<Produto> produtos = new ArrayList<>();
+    private Double preco;
 
-    public Categoria(Long id, String nome) {
-        this.id = id;
-        this.nome = nome;
+    @ManyToMany
+    @JoinTable(name = "PRODUTO.CATEGORIA",
+            joinColumns = @JoinColumn(name = "produto.id"),
+            inverseJoinColumns = @JoinColumn(name = "categoria.id"))
+    private List<Categoria> categorias = new ArrayList<>();
+
+    public Produto() {
     }
 
-    public Categoria() {
+    public Produto(Long id, String nome, Double preco) {
+        this.id = id;
+        this.nome = nome;
+        this.preco = preco;
     }
 
     public Long getId() {
@@ -53,18 +60,26 @@ public class Categoria implements Serializable {
         this.nome = nome;
     }
 
-    public List<Produto> getProdutos() {
-        return produtos;
+    public Double getPreco() {
+        return preco;
     }
 
-    public void setProdutos(List<Produto> produtos) {
-        this.produtos = produtos;
+    public void setPreco(Double preco) {
+        this.preco = preco;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + (int) (this.id ^ (this.id >>> 32));
         return hash;
     }
 
@@ -79,8 +94,8 @@ public class Categoria implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Categoria other = (Categoria) obj;
-        if (!Objects.equals(this.id, other.id)) {
+        final Produto other = (Produto) obj;
+        if (this.id != other.id) {
             return false;
         }
         return true;
