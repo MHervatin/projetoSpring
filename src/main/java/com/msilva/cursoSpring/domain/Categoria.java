@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class Categoria implements Serializable {
 
     private String nome;
 
+    @JsonManagedReference
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
 
