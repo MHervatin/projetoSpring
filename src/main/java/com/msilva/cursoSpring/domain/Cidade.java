@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ public class Cidade implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="estado_id")
+    @JsonManagedReference
     private Estado estado;
 
     public Cidade() {

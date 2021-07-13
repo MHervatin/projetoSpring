@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -37,6 +38,7 @@ public class Cliente implements Serializable {
 
     private Integer tipo;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "cliente")
     private List<Endereco> enderecos = new ArrayList<>();
 
