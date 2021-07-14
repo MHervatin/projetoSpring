@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Provê o acesso a base de dados para {@code Categoria}.
+ * Provê o acesso a base de dados para {@code Cliente}.
  *
  * @author Mateus
  */
