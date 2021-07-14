@@ -43,4 +43,19 @@ public class CategoriaService {
                 -> new ObjectNotFoundException("Objeto não encontrado! - ID: '"
                         + id + "', Tipo: '" + Categoria.class.getName() + "'"));
     }
+
+    /**
+     * Insere uma nova Categoria.
+     *
+     * @param categoria A Categoria a ser inserida.
+     *
+     * @return A Categoria inserida.
+     */
+    public Categoria inserir(Categoria categoria) {
+        if (categoria.getId() != null) {
+            categoria.setId(null);
+        }
+
+        return repository.save(categoria);
+    }
 }
