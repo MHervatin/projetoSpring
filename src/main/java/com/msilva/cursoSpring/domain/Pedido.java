@@ -39,7 +39,6 @@ public class Pedido implements Serializable {
     private Date instante;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-    @JsonManagedReference
     private Pagamento pagamento;
 
     @ManyToOne
@@ -56,11 +55,10 @@ public class Pedido implements Serializable {
     public Pedido() {
     }
 
-    public Pedido(Long id, Date instante, Pagamento pagamento, Cliente cliente,
+    public Pedido(Long id, Date instante, Cliente cliente,
             Endereco enderecoDeEntrega) {
         this.id = id;
         this.instante = instante;
-        this.pagamento = pagamento;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
