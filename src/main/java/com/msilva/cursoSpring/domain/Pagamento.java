@@ -5,7 +5,7 @@
  */
 package com.msilva.cursoSpring.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import java.io.Serializable;
 import java.util.Objects;
@@ -35,7 +35,7 @@ public abstract class Pagamento implements Serializable {
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
-    @JsonBackReference
+    @JsonIgnore
     private Pedido pedido;
 
     public Pagamento() {

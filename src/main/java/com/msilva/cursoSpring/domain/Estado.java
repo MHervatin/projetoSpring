@@ -1,6 +1,6 @@
 package com.msilva.cursoSpring.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class Estado implements Serializable {
     private Long id;
     private String nome;
     
-    @JsonBackReference
+    @JsonIgnore
     @OneToMany(mappedBy="estado")
     private List<Cidade> cidades = new ArrayList<>();
 

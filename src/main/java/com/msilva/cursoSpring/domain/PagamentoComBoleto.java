@@ -8,9 +8,7 @@ package com.msilva.cursoSpring.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
 
 /**
  *
