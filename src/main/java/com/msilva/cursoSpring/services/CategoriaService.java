@@ -4,7 +4,6 @@ import com.msilva.cursoSpring.domain.Categoria;
 import com.msilva.cursoSpring.repositories.CategoriaRepository;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import java.util.List;
-import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +54,19 @@ public class CategoriaService {
         if (categoria.getId() != null) {
             categoria.setId(null);
         }
+
+        return repository.save(categoria);
+    }
+
+    /**
+     * Atualiza a categoria.
+     *
+     * @param categoria A Categoria a ser atualizada
+     *
+     * @return A Categoria atualizada.
+     */
+    public Categoria atualizar(Categoria categoria) {
+        buscaCategoriaPorID(categoria.getId());
 
         return repository.save(categoria);
     }

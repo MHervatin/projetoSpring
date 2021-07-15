@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +61,7 @@ public class CategoriaResource {
      *
      * @param categoria A Categoria que será inserida.
      *
-     * @return O Corpo da requisição vazio.
+     * @return O Corpo da requisição vazio e o código http 201.
      */
     @PostMapping
     public ResponseEntity<Void> inserir(@RequestBody Categoria categoria) {
@@ -75,5 +76,22 @@ public class CategoriaResource {
 
         // Retorno com o código de status criado (201);
         return ResponseEntity.created(uri).build();
+    }
+
+    /**
+     * Atualiza a Categoria.
+     *
+     * @param categoria A Categoria com o dado atualizado.
+     * @param id O ID da Categoria a ser atualizada.
+     *
+     * @return Um corpo de requisição vazio e o código http 204.
+     */
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Void> atualizar(@RequestBody Categoria categoria,
+            @PathVariable Long id) {
+        categoria.setId(id);
+        service.atualizar(categoria);
+
+        return ResponseEntity.noContent().build();
     }
 }
