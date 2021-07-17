@@ -1,12 +1,15 @@
 package com.msilva.cursoSpring.resources.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
 
 /**
+ * Classe que encapsula exceções para exibição na API.
  *
  * @author Mateus
  */
-public class StandardError implements Serializable{
+public class StandardError implements Serializable {
+
     private Integer statusHttp;
     private String mensagem;
     private Long timeStamp;

@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.resources.exceptions;
 
+import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -32,5 +33,24 @@ public class ResourceExceptionHendler {
                 exception.getMessage(), System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    /**
+     * Tratamento para falha na integridade dos dados.
+     *
+     * @param exception {@code DataIntegrityException} que ocorreu.
+     * @param httpServletRequest {@code HttpServletRequest} da exceção.
+     *
+     * @return
+     */
+    @ExceptionHandler(DataIntegrityException.class)
+    public ResponseEntity<StandardError> dataIntegrity(
+            DataIntegrityException exception,
+            HttpServletRequest httpServletRequest) {
+
+        StandardError error = new StandardError(HttpStatus.BAD_REQUEST.value(),
+                exception.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }

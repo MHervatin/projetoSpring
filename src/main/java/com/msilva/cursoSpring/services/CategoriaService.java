@@ -2,9 +2,11 @@ package com.msilva.cursoSpring.services;
 
 import com.msilva.cursoSpring.domain.Categoria;
 import com.msilva.cursoSpring.repositories.CategoriaRepository;
+import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -69,5 +71,16 @@ public class CategoriaService {
         buscaCategoriaPorID(categoria.getId());
 
         return repository.save(categoria);
+    }
+
+    public void deletarPorId(Long id) {
+        buscaCategoriaPorID(id);
+
+        try {
+            repository.deleteById(id);
+        } catch (DataIntegrityViolationException dex) {
+            throw new DataIntegrityException("Não é possivel excluir uma"
+                    + " categoria que contém produtos.", dex);
+        }
     }
 }
