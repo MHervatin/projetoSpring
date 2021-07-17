@@ -6,6 +6,7 @@ import com.msilva.cursoSpring.services.CategoriaService;
 import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -94,12 +95,15 @@ public class CategoriaResource {
     /**
      * Insere uma nova Categoria.
      *
-     * @param categoria A Categoria que será inserida.
+     * @param categoriaDTO A CategoriaD que será inserida.
      *
      * @return O Corpo da requisição vazio e o código http 201.
      */
     @PostMapping
-    public ResponseEntity<Void> inserir(@RequestBody Categoria categoria) {
+    public ResponseEntity<Void> inserir(
+            @Valid @RequestBody CategoriaDTO categoriaDTO) {
+        Categoria categoria = service.retornaCategoriaPorDTO(categoriaDTO);
+
         //Salvo a categoria.
         categoria = service.inserir(categoria);
 
@@ -116,14 +120,17 @@ public class CategoriaResource {
     /**
      * Atualiza a Categoria.
      *
-     * @param categoria A Categoria com o dado atualizado.
+     * @param categoriaDTO A Categoria com o dado atualizado.
      * @param id O ID da Categoria a ser atualizada.
      *
      * @return Um corpo de requisição vazio e o código http 204.
      */
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> atualizar(@RequestBody Categoria categoria,
+    public ResponseEntity<Void> atualizar(
+            @Valid @RequestBody CategoriaDTO categoriaDTO,
             @PathVariable Long id) {
+        Categoria categoria = service.retornaCategoriaPorDTO(categoriaDTO);
+
         categoria.setId(id);
         service.atualizar(categoria);
 

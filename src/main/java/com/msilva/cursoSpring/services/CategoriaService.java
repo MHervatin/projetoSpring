@@ -1,6 +1,7 @@
 package com.msilva.cursoSpring.services;
 
 import com.msilva.cursoSpring.domain.Categoria;
+import com.msilva.cursoSpring.dto.CategoriaDTO;
 import com.msilva.cursoSpring.repositories.CategoriaRepository;
 import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
@@ -104,5 +105,16 @@ public class CategoriaService {
                 Direction.valueOf(direcao), ordenarPor);
 
         return repository.findAll(pageRequest);
+    }
+
+    /**
+     * Converte uma {@code CategoriaDTO} para uma {@code Categoria}.
+     *
+     * @param categoriaDTO A {@code CategoriaDTO} a ser convertida.
+     *
+     * @return Uma {@code Categoria}.
+     */
+    public Categoria retornaCategoriaPorDTO(CategoriaDTO categoriaDTO) {
+        return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
     }
 }
