@@ -1,9 +1,11 @@
 package com.msilva.cursoSpring.resources;
 
 import com.msilva.cursoSpring.domain.Categoria;
+import com.msilva.cursoSpring.dto.CategoriaDTO;
 import com.msilva.cursoSpring.services.CategoriaService;
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,15 +34,20 @@ public class CategoriaResource {
     private CategoriaService service;
 
     /**
-     * Retorna todas as {@code Categoria} cadastradas.
+     * Retorna todas as categoria cadastradas.
      *
-     * @return Uma lista com todas as {@code Categoria} cadastradas.
+     * @return Uma lista de {@code CategoriaDTO} com todas as categorias
+     * cadastradas.
      */
     @GetMapping
-    public ResponseEntity buscaTodasCategorias() {
+    public ResponseEntity<List<CategoriaDTO>> buscaTodasCategorias() {
         List<Categoria> categorias = service.buscaTodasCategorias();
 
-        return ResponseEntity.ok(categorias);
+        List<CategoriaDTO> categoriasDto = categorias.stream()
+                .map(cat -> new CategoriaDTO(cat))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(categoriasDto);
     }
 
     /**
@@ -95,8 +102,8 @@ public class CategoriaResource {
 
         return ResponseEntity.noContent().build();
     }
-    
-      /**
+
+    /**
      * A {@code Categoria} com {@code ID}.
      *
      * @param id ID da {@code Categoria} buscada.
