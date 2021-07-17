@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -48,6 +50,31 @@ public class CategoriaResource {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(categoriasDto);
+    }
+
+    /**
+     * Retorna todas as categoria cadastradas por pagina.
+     *
+     * @param pagina O numero da pagina a ser exibida.
+     * @param linhasPorPagina A quantidade de linhas por página.
+     * @param ordenarPor A ordenação a ser adotada
+     * @param direcao A direção a qual os dados serão retornados.
+     *
+     * @return Uma pagina com as categorias cadastradas.
+     */
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<CategoriaDTO>> buscaTodasCategoriasPorPagina(
+            @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+            @RequestParam(value = "linhasPorPagina", defaultValue = "24") Integer linhasPorPagina,
+            @RequestParam(value = "ordenarPor", defaultValue = "nome") String ordenarPor,
+            @RequestParam(value = "direcao", defaultValue = "ASC") String direcao) {
+        Page<Categoria> paginaCategoria = service.buscaCategoriaPorPagina(
+                pagina, linhasPorPagina, ordenarPor, direcao);
+
+        Page<CategoriaDTO> pageCategoriaDTO = paginaCategoria
+                .map(pag -> new CategoriaDTO(pag));
+
+        return ResponseEntity.ok(pageCategoriaDTO);
     }
 
     /**

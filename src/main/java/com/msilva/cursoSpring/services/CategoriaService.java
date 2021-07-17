@@ -7,6 +7,9 @@ import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 /**
@@ -82,5 +85,24 @@ public class CategoriaService {
             throw new DataIntegrityException("Não é possivel excluir uma"
                     + " categoria que contém produtos.", dex);
         }
+    }
+
+    /**
+     * Busca paginada para categoria
+     *
+     * @param pagina O numero da pagina a ser exibida.
+     * @param linhasPorPagina A quantidade de linhas por página.
+     * @param ordenarPor A ordenação a ser adotada
+     * @param direcao A direção a qual os dados serão retornados.
+     *
+     * @return Uma página de Categoria.
+     */
+    public Page<Categoria> buscaCategoriaPorPagina(Integer pagina,
+            Integer linhasPorPagina,
+            String ordenarPor, String direcao) {
+        PageRequest pageRequest = PageRequest.of(pagina, linhasPorPagina,
+                Direction.valueOf(direcao), ordenarPor);
+
+        return repository.findAll(pageRequest);
     }
 }
