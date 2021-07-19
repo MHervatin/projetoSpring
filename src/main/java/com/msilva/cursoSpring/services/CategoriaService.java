@@ -77,6 +77,12 @@ public class CategoriaService {
         return repository.save(categoria);
     }
 
+    /**
+     * Deleta a {@code Categoria} com o {@code ID}.
+     *
+     * @param id ID da {@code Categoria} buscada.
+     *
+     */
     public void deletarPorId(Long id) {
         buscaCategoriaPorID(id);
 
