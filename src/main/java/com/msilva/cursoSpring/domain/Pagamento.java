@@ -22,7 +22,7 @@ import javax.persistence.OneToOne;
  * @author Mateus
  */
 @Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -43,7 +43,7 @@ public abstract class Pagamento implements Serializable {
 
     public Pagamento(Long id, EstadoPagamento estado, Pedido pedido) {
         this.id = id;
-        this.estado = estado.getCodigo();
+        this.estado = estado != null ? estado.getCodigo() : null;
         this.pedido = pedido;
     }
 

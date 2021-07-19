@@ -67,14 +67,17 @@ public class CategoriaService {
     /**
      * Atualiza a categoria.
      *
-     * @param categoria A Categoria a ser atualizada
+     * @param categoriaAtualizada A Categoria a ser atualizada
      *
      * @return A Categoria atualizada.
      */
-    public Categoria atualizar(Categoria categoria) {
-        buscaCategoriaPorID(categoria.getId());
+    public Categoria atualizar(Categoria categoriaAtualizada) {
+        Categoria categoriaAtual
+                = buscaCategoriaPorID(categoriaAtualizada.getId());
 
-        return repository.save(categoria);
+        atualizarDados(categoriaAtual, categoriaAtualizada);
+
+        return repository.save(categoriaAtual);
     }
 
     /**
@@ -122,5 +125,17 @@ public class CategoriaService {
      */
     public Categoria retornaCategoriaPorDTO(CategoriaDTO categoriaDTO) {
         return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
+    }
+
+    /**
+     * Atualiza os dados da {@code Categoria} atual com o da {@code Categoria}
+     * atualizada.
+     *
+     * @param categoriaAtual A Categoria a ser atualizada.
+     * @param categoriaAtualizada A Categoria com os dados atualizados.
+     */
+    private void atualizarDados(Categoria categoriaAtual,
+            Categoria categoriaAtualizada) {
+        categoriaAtual.setNome(categoriaAtualizada.getNome());
     }
 }
