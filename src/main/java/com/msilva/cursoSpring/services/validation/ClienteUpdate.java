@@ -8,14 +8,14 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 /**
- * Classe responsável por encapsular os erros de validação na atualização.
+ * Classe responsável por encapsular os erros de validação.
  *
  * @author Mateus
  */
 @Constraint(validatedBy = ClienteUpdateValidator.class)
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ClienteInsert {
+public @interface ClienteUpdate {
 
     String message() default "Erro de validação";
 

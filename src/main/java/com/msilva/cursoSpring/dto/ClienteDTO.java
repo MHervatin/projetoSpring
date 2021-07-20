@@ -1,15 +1,19 @@
 package com.msilva.cursoSpring.dto;
 
 import com.msilva.cursoSpring.domain.Cliente;
+import com.msilva.cursoSpring.services.validation.ClienteUpdate;
 import java.io.Serializable;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 /**
+ * Classe resposável por encapsular os dados para Atualização ou listagem
+ * múltipla de Clientes.
  *
  * @author Mateus
  */
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
