@@ -1,24 +1,48 @@
 package com.msilva.cursoSpring.dto;
 
+import com.msilva.cursoSpring.services.validation.ClienteInsert;
 import java.io.Serializable;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import org.hibernate.validator.constraints.Length;
 
 /**
+ * Classe resposável por encapsular os dados para inserção de um novo Cliente.
  *
  * @author Mateus
  */
+@ClienteInsert
 public class NovoClienteDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @NotEmpty(message = "Preenchimento Obrigatório!")
+    @Length(min = 5, max = 120, message = "O tamanho deve ser entre 5 e 120 caracteres.")
     private String nome;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
+    @Email(message = "E-mail inválido!")
     private String email;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
     private String cpfCnpj;
+
     private Integer tipo;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
     private String logradouro;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
     private String numero;
+
     private String complemento;
+
     private String bairro;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
     private String cep;
+
+    @NotEmpty(message = "Preenchimento Obrigatório!")
     private String telefone1;
     private String telefone2;
     private String telefone3;
