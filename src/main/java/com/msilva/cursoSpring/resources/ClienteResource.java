@@ -2,6 +2,7 @@ package com.msilva.cursoSpring.resources;
 
 import com.msilva.cursoSpring.domain.Cliente;
 import com.msilva.cursoSpring.dto.ClienteDTO;
+import com.msilva.cursoSpring.dto.NovoClienteDTO;
 import com.msilva.cursoSpring.services.ClienteService;
 import java.net.URI;
 import java.util.List;
@@ -94,19 +95,19 @@ public class ClienteResource {
     /**
      * Insere um novo Cliente.
      *
-     * @param categoriaDTO O ClienteDTO que será inserido.
+     * @param clienteDTO O NovoClienteDTO que será inserido.
      *
      * @return O Corpo da requisição vazio e o código http 201.
      */
     @PostMapping
     public ResponseEntity<Void> inserir(
-            @Valid @RequestBody ClienteDTO categoriaDTO) {
-        Cliente categoria = service.retornaClientePorDTO(categoriaDTO);
+            @Valid @RequestBody NovoClienteDTO clienteDTO) {
+        Cliente categoria = service.retornaClientePorDTO(clienteDTO);
 
-        //Salvo a categoria.
+        //Salvo o Cliente.
         categoria = service.inserir(categoria);
 
-        // Monto a URI que foi gerada para essa categoria.
+        // Monto a URI que foi gerada para esse Cliente.
         // OBS: É uma boa prática retornar a URI do objeto sempre que ele é
         // inserido via API REST.
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")

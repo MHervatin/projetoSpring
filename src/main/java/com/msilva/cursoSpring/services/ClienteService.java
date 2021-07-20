@@ -1,13 +1,18 @@
 package com.msilva.cursoSpring.services;
 
+import com.msilva.cursoSpring.domain.Cidade;
 import com.msilva.cursoSpring.domain.Cliente;
+import com.msilva.cursoSpring.domain.Endereco;
 import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import com.msilva.cursoSpring.dto.ClienteDTO;
+import com.msilva.cursoSpring.dto.NovoClienteDTO;
+import com.msilva.cursoSpring.repositories.CidadeRepository;
 import com.msilva.cursoSpring.repositories.ClienteRepository;
+import com.msilva.cursoSpring.repositories.EnderecoRepository;
 import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
-import java.nio.channels.UnsupportedAddressTypeException;
 import java.util.List;
+import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -28,6 +33,12 @@ public class ClienteService {
      */
     @Autowired
     private ClienteRepository repository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private CidadeRepository cidadeRepository;
 
     /**
      * Busca todos os {@code Cliente}.
@@ -54,16 +65,19 @@ public class ClienteService {
     /**
      * Insere um novo Cliente.
      *
-     * @param categoria O Cliente a ser inserido.
+     * @param cliente O Cliente a ser inserido.
      *
      * @return O Cliente inserido.
      */
-    public Cliente inserir(Cliente categoria) {
-        if (categoria.getId() != null) {
-            categoria.setId(null);
+    public Cliente inserir(Cliente cliente) {
+        if (cliente.getId() != null) {
+            cliente.setId(null);
         }
+        Cliente clientePersistido = repository.save(cliente);
 
-        return repository.save(categoria);
+        enderecoRepository.saveAll(cliente.getEnderecos());
+
+        return clientePersistido;
     }
 
     /**
@@ -127,6 +141,39 @@ public class ClienteService {
     public Cliente retornaClientePorDTO(ClienteDTO clienteDTO) {
         return new Cliente(clienteDTO.getId(), clienteDTO.getNome(),
                 clienteDTO.getEmail(), null, null);
+    }
+
+    /**
+     * Converte um {@code ClienteDTO} para um {@code Cliente}.
+     *
+     * @param clienteDTO O {@code ClienteDTO} a ser convertido.
+     *
+     * @return Um {@code Cliente}.
+     */
+    @Transactional
+    public Cliente retornaClientePorDTO(NovoClienteDTO clienteDTO) {
+        Cliente cliente = new Cliente(null, clienteDTO.getNome(),
+                clienteDTO.getEmail(), clienteDTO.getCpfCnpj(),
+                TipoCliente.toEnum(clienteDTO.getTipo()));
+
+        Cidade cidade = cidadeRepository.findById(clienteDTO.getCidadeId()).get();
+
+        Endereco endereco = new Endereco(null, clienteDTO.getLogradouro(),
+                clienteDTO.getNumero(), clienteDTO.getComplemento(),
+                clienteDTO.getBairro(), clienteDTO.getCep(), cliente, cidade);
+
+        cliente.getEnderecos().add(endereco);
+        cliente.getTelefones().add(clienteDTO.getTelefone1());
+
+        if (clienteDTO.getTelefone2() != null) {
+            cliente.getTelefones().add(clienteDTO.getTelefone2());
+        }
+
+        if (clienteDTO.getTelefone3() != null) {
+            cliente.getTelefones().add(clienteDTO.getTelefone3());
+        }
+
+        return cliente;
     }
 
     /**
