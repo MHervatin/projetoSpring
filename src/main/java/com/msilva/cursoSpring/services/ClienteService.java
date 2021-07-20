@@ -34,9 +34,15 @@ public class ClienteService {
     @Autowired
     private ClienteRepository repository;
 
+    /**
+     * Provê a instância do repositório de Endereço.
+     */
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    /**
+     * Provê a instância do repositório de Cidade.
+     */
     @Autowired
     private CidadeRepository cidadeRepository;
 
