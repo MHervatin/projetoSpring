@@ -1,10 +1,15 @@
 package com.msilva.cursoSpring.services;
 
+import com.msilva.cursoSpring.domain.ItemPedido;
+import com.msilva.cursoSpring.domain.PagamentoComBoleto;
 import com.msilva.cursoSpring.domain.Pedido;
+import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
+import com.msilva.cursoSpring.repositories.ItemPedidoRepository;
+import com.msilva.cursoSpring.repositories.PagamentoRepository;
 import com.msilva.cursoSpring.repositories.PedidoRepository;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
+import java.util.Date;
 import java.util.List;
-import java.util.function.Supplier;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +26,30 @@ public class PedidoService {
      */
     @Autowired
     private PedidoRepository repository;
+
+    /**
+     * Provê a instância do service de Boleto.
+     */
+    @Autowired
+    private BoletoService boletoService;
+
+    /**
+     * Provê a instância do repositório de pagamento.
+     */
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
+
+    /**
+     * Provê a instância do repositório de item do pedido.
+     */
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    /**
+     * Provê a instância do service de produto.
+     */
+    @Autowired
+    private ProdutoService produtoService;
 
     /**
      * Busca todas os {@code Pedidos}.
@@ -42,5 +71,46 @@ public class PedidoService {
         return repository.findById(id).orElseThrow(()
                 -> new ObjectNotFoundException("Objeto não encontrado! - ID: '"
                         + id + "', Tipo: '" + Pedido.class.getName() + "'"));
+    }
+
+    /**
+     * Efetua a inserção de um novo pedido.
+     *
+     * @param pedido a ser inserido.
+     *
+     * @return o pedido inserido.
+     */
+    public Pedido inserir(Pedido pedido) {
+        if (pedido.getId() != null) {
+            pedido.setId(null);
+        }
+
+        pedido.setInstante(new Date());
+        pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
+        pedido.getPagamento().setPedido(pedido);
+
+        if (pedido.getPagamento() instanceof PagamentoComBoleto) {
+            PagamentoComBoleto pagamento
+                    = (PagamentoComBoleto) pedido.getPagamento();
+
+            boletoService.preencherPagamentoComBoleto(pagamento,
+                    pedido.getInstante());
+        }
+
+        pedido = repository.save(pedido);
+
+        pagamentoRepository.save(pedido.getPagamento());
+
+        for (ItemPedido item : pedido.getItens()) {
+            item.setDesconto(0.00);
+            item.setPreco(produtoService.buscaProdutoPorID(
+                    item.getProduto().getId()).getPreco());
+
+            item.setPedido(pedido);
+        }
+
+        itemPedidoRepository.saveAll(pedido.getItens());
+
+        return pedido;
     }
 }
