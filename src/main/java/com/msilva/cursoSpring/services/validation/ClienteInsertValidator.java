@@ -5,7 +5,7 @@ import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import com.msilva.cursoSpring.dto.NovoClienteDTO;
 import com.msilva.cursoSpring.repositories.ClienteRepository;
 import com.msilva.cursoSpring.resources.exceptions.FieldMessage;
-import com.msilva.cursoSpring.services.validation.utils.BR;
+import com.msilva.cursoSpring.services.validation.utils.BRUtilities;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.ConstraintValidator;
@@ -36,11 +36,11 @@ public class ClienteInsertValidator
         List<FieldMessage> list = new ArrayList<>();
 
         if (objDto.getTipo().equals(TipoCliente.PESSOA_FISICA.getCodigo())
-                && !BR.isValidCPF(objDto.getCpfCnpj())) {
+                && !BRUtilities.isValidCPF(objDto.getCpfCnpj())) {
             list.add(new FieldMessage("cpfCnpj", "CPF Inválido!"));
 
         } else if (objDto.getTipo().equals(TipoCliente.PESSOA_JURIDICA.getCodigo())
-                && !BR.isValidCNPJ(objDto.getCpfCnpj())) {
+                && !BRUtilities.isValidCNPJ(objDto.getCpfCnpj())) {
             list.add(new FieldMessage("cpfCnpj", "CNPJ Inválido!"));
         }
 

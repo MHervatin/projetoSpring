@@ -5,7 +5,7 @@ import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import com.msilva.cursoSpring.dto.ClienteDTO;
 import com.msilva.cursoSpring.repositories.ClienteRepository;
 import com.msilva.cursoSpring.resources.exceptions.FieldMessage;
-import com.msilva.cursoSpring.services.validation.utils.BR;
+import com.msilva.cursoSpring.services.validation.utils.BRUtilities;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

@@ -5,7 +5,7 @@ package com.msilva.cursoSpring.services.validation.utils;
  *
  * @author Mateus
  */
-public class BR {
+public class BRUtilities {
 
     // CPF
     private static final int[] weightSsn
