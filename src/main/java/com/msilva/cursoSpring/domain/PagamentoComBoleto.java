@@ -1,20 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msilva.cursoSpring.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import java.util.Date;
 import javax.persistence.Entity;
 
 /**
+ * Classe filha de {@link Pagamento} responsável por pagamentos com boleto.
  *
  * @author Mateus
  */
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento {
 
     private static final long serialVersionUID = 1L;

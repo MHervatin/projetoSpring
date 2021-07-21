@@ -1,11 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msilva.cursoSpring.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import java.io.Serializable;
 import java.util.Objects;
@@ -18,11 +14,13 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 /**
+ * Classe responsavél por prover a estrutura de um pagamento.
  *
  * @author Mateus
  */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Pagamento implements Serializable {
 
     private static final long serialVersionUID = 1L;
