@@ -6,7 +6,6 @@
 package com.msilva.cursoSpring.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -42,13 +41,13 @@ public class Pedido implements Serializable {
     private Pagamento pagamento;
 
     @ManyToOne
-    @JoinColumn(name="cliente_id")
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
-    
+
     @ManyToOne
-    @JoinColumn(name="endereco_de_entrega_id")
+    @JoinColumn(name = "endereco_de_entrega_id")
     private Endereco enderecoDeEntrega;
-    
+
     @OneToMany(mappedBy = "id.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -61,6 +60,16 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    public Double getValorTotal() {
+        Double soma = 0.00;
+
+        for (ItemPedido item : itens) {
+            soma = soma + item.getSubTotal();
+        }
+
+        return soma;
     }
 
     public Long getId() {
