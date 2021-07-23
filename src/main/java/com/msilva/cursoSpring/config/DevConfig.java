@@ -1,6 +1,8 @@
 package com.msilva.cursoSpring.config;
 
 import com.msilva.cursoSpring.services.DBService;
+import com.msilva.cursoSpring.services.EmailService;
+import com.msilva.cursoSpring.services.SmtpEmailService;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,5 +40,15 @@ public class DevConfig {
 
         dbService.instanciarBancoDadosTeste();
         return true;
+    }
+
+    /**
+     * Retorna uma instância de {@link SmtpEmailService}.
+     *
+     * @return uma instância de {@link SmtpEmailService}.
+     */
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
     }
 }

@@ -15,6 +15,9 @@ import org.springframework.mail.SimpleMailMessage;
  */
 public class MockEmailService extends AbstractEmailService {
 
+    /**
+     * Logger para {@code MockEmailService}.
+     */
     private static final Logger LOGGER
             = LoggerFactory.getLogger(MockEmailService.class);
 

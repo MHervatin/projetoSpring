@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msilva.cursoSpring.services;
 
 import com.msilva.cursoSpring.domain.Categoria;
@@ -215,7 +210,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Cliente cli1 = new Cliente(null, "Maria Silva", "nelio.cursos@gmail.com",
+        Cliente cli1 = new Cliente(null, "Maria Silva", "hervatin.mateus@gmail.com",
                 "36378912377", TipoCliente.PESSOA_FISICA);
 
         cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
