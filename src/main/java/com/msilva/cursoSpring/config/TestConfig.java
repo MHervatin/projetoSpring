@@ -1,6 +1,8 @@
 package com.msilva.cursoSpring.config;
 
 import com.msilva.cursoSpring.services.DBService;
+import com.msilva.cursoSpring.services.EmailService;
+import com.msilva.cursoSpring.services.MockEmailService;
 import java.text.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,5 +32,15 @@ public class TestConfig {
     public boolean instanciacaoBancoDeDados() throws ParseException {
         dbService.instanciarBancoDadosTeste();
         return true;
+    }
+
+    /**
+     * Retorna uma instância de {@link MockEmailService}.
+     *
+     * @return uma instância de {@link MockEmailService}.
+     */
+    @Bean
+    public EmailService emailService() {
+        return new MockEmailService();
     }
 }

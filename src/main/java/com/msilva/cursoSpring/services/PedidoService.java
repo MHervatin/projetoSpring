@@ -59,6 +59,12 @@ public class PedidoService {
     private ClienteService clienteService;
 
     /**
+     * Provê uma instância de service de Email;
+     */
+    @Autowired
+    private EmailService emailService;
+
+    /**
      * Busca todas os {@code Pedidos}.
      *
      * @return Uma lista com todos os Pedidos.
@@ -114,7 +120,7 @@ public class PedidoService {
         for (ItemPedido item : pedido.getItens()) {
             Produto produto = produtoService.buscaProdutoPorID(
                     item.getProduto().getId());
-            
+
             item.setProduto(produto);
             item.setDesconto(0.00);
             item.setPreco(produto.getPreco());
@@ -123,6 +129,8 @@ public class PedidoService {
         }
 
         itemPedidoRepository.saveAll(pedido.getItens());
+
+        emailService.enviarEmailConfirmacaoPedido(pedido);
 
         return pedido;
     }

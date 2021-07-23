@@ -160,13 +160,13 @@ public class Pedido implements Serializable {
         sb.append(this.getCliente().getNome());
         sb.append(", Situação pagamento: ");
         sb.append(this.getPagamento().getEstado().getDescricao());
-        sb.append("\n\nDetalhes:\n");
+        sb.append("\n\nDetalhes:\n\n");
 
         for (ItemPedido item : this.getItens()) {
             sb.append(item.toString());
         }
 
-        sb.append("Valor total: ");
+        sb.append("\nValor total: ");
         sb.append(nf.format(this.getValorTotal()));
 
         return sb.toString();
