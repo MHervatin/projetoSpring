@@ -130,7 +130,7 @@ public class PedidoService {
 
         itemPedidoRepository.saveAll(pedido.getItens());
 
-        emailService.enviarEmailConfirmacaoPedido(pedido);
+        emailService.enviarEmailConfirmacaoHtml(pedido);
 
         return pedido;
     }

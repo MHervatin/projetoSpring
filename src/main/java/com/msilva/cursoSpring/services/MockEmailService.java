@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msilva.cursoSpring.services;
 
+import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.SimpleMailMessage;
 
 /**
+ * Provê serviços para e-mail de teste.
  *
  * @author Mateus
  */
@@ -26,7 +23,14 @@ public class MockEmailService extends AbstractEmailService {
      */
     @Override
     public void enviarEmail(SimpleMailMessage message) {
-        LOGGER.info("Simulando e-mail...");
+        LOGGER.info("Simulando envio de e-mail...");
+        LOGGER.info(message.toString());
+        LOGGER.info("E-mail enviado!");
+    }
+
+    @Override
+    public void enviarHtmlEmail(MimeMessage message) {
+        LOGGER.info("Simulando envio de e-mail HTML...");
         LOGGER.info(message.toString());
         LOGGER.info("E-mail enviado!");
     }
