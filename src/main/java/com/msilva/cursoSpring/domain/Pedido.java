@@ -1,14 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.msilva.cursoSpring.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.CascadeType;
@@ -22,6 +20,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
+ * Classe responsavél por representar um Pedido.
  *
  * @author Mateus
  */
@@ -143,5 +142,33 @@ public class Pedido implements Serializable {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat nf = NumberFormat.getCurrencyInstance(
+                new Locale("pt", "BR"));
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Número pedido: ");
+        sb.append(this.getId());
+        sb.append(", Instante: ");
+        sb.append(sdf.format(this.getInstante()));
+        sb.append(", Cliente: ");
+        sb.append(this.getCliente().getNome());
+        sb.append(", Situação pagamento: ");
+        sb.append(this.getPagamento().getEstado().getDescricao());
+        sb.append("\n\nDetalhes:\n");
+
+        for (ItemPedido item : this.getItens()) {
+            sb.append(item.toString());
+        }
+
+        sb.append("Valor total: ");
+        sb.append(nf.format(this.getValorTotal()));
+
+        return sb.toString();
     }
 }

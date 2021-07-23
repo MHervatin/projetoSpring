@@ -3,6 +3,7 @@ package com.msilva.cursoSpring.services;
 import com.msilva.cursoSpring.domain.ItemPedido;
 import com.msilva.cursoSpring.domain.PagamentoComBoleto;
 import com.msilva.cursoSpring.domain.Pedido;
+import com.msilva.cursoSpring.domain.Produto;
 import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import com.msilva.cursoSpring.repositories.ItemPedidoRepository;
 import com.msilva.cursoSpring.repositories.PagamentoRepository;
@@ -52,6 +53,12 @@ public class PedidoService {
     private ProdutoService produtoService;
 
     /**
+     * Provê uma instância de service de Cliente;
+     */
+    @Autowired
+    private ClienteService clienteService;
+
+    /**
      * Busca todas os {@code Pedidos}.
      *
      * @return Uma lista com todos os Pedidos.
@@ -86,6 +93,9 @@ public class PedidoService {
         }
 
         pedido.setInstante(new Date());
+        pedido.setCliente(
+                clienteService.buscaClientePorID(pedido.getCliente().getId()));
+
         pedido.getPagamento().setEstado(EstadoPagamento.PENDENTE);
         pedido.getPagamento().setPedido(pedido);
 
@@ -102,9 +112,12 @@ public class PedidoService {
         pagamentoRepository.save(pedido.getPagamento());
 
         for (ItemPedido item : pedido.getItens()) {
+            Produto produto = produtoService.buscaProdutoPorID(
+                    item.getProduto().getId());
+            
+            item.setProduto(produto);
             item.setDesconto(0.00);
-            item.setPreco(produtoService.buscaProdutoPorID(
-                    item.getProduto().getId()).getPreco());
+            item.setPreco(produto.getPreco());
 
             item.setPedido(pedido);
         }
