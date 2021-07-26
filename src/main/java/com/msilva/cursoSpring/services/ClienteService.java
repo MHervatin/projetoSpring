@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -45,6 +46,12 @@ public class ClienteService {
      */
     @Autowired
     private CidadeRepository cidadeRepository;
+
+    /**
+     * Provê uma instância de {@code BCryptPasswordEncoder}.
+     */
+    @Autowired
+    private BCryptPasswordEncoder bcpe;
 
     /**
      * Busca todos os {@code Cliente}.
@@ -146,7 +153,7 @@ public class ClienteService {
      */
     public Cliente retornaClientePorDTO(ClienteDTO clienteDTO) {
         return new Cliente(clienteDTO.getId(), clienteDTO.getNome(),
-                clienteDTO.getEmail(), null, null);
+                clienteDTO.getEmail(), null, null, null);
     }
 
     /**
@@ -160,7 +167,8 @@ public class ClienteService {
     public Cliente retornaClientePorDTO(NovoClienteDTO clienteDTO) {
         Cliente cliente = new Cliente(null, clienteDTO.getNome(),
                 clienteDTO.getEmail(), clienteDTO.getCpfCnpj(),
-                TipoCliente.toEnum(clienteDTO.getTipo()));
+                TipoCliente.toEnum(clienteDTO.getTipo()),
+                bcpe.encode(clienteDTO.getSenha()));
 
         Cidade cidade = cidadeRepository.findById(clienteDTO.getCidadeId()).get();
 
