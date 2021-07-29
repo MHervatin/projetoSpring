@@ -1,19 +1,18 @@
 package com.msilva.cursoSpring.domain.enums;
 
 /**
- * Enumeração para estados de pagamento.
+ * Enumeração para tipos de perfil de cliente.
  *
  * @author Mateus
  */
-public enum EstadoPagamento {
-    PENDENTE(1, "Pendente"),
-    QUITADO(2, "Quitado"),
-    CANCELADO(3, "Cancelado");
+public enum PerfilCliente {
+    ADMIN(1, "ROLE_ADMIN"),
+    CLIENTE(2, "ROLE_CLIENTE");
 
     private int codigo;
     private String descricao;
 
-    private EstadoPagamento(int codigo, String descricao) {
+    private PerfilCliente(int codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
     }
@@ -26,12 +25,12 @@ public enum EstadoPagamento {
         return descricao;
     }
 
-    public static EstadoPagamento toEnum(Integer codigo) {
+    public static PerfilCliente toEnum(Integer codigo) {
         if (codigo == null) {
             return null;
         }
 
-        for (EstadoPagamento value : EstadoPagamento.values()) {
+        for (PerfilCliente value : PerfilCliente.values()) {
             if (codigo.equals(value.getCodigo())) {
                 return value;
             }

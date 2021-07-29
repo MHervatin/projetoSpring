@@ -1,6 +1,7 @@
 package com.msilva.cursoSpring.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.msilva.cursoSpring.domain.enums.PerfilCliente;
 import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,11 +9,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +58,12 @@ public class Cliente implements Serializable {
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfis")
+    private Set<Integer> perfis = new HashSet<>();
+
     public Cliente() {
+        addPerfil(PerfilCliente.CLIENTE);
     }
 
     public Cliente(Long id, String nome, String email, String cpfCnpj,
@@ -66,6 +74,7 @@ public class Cliente implements Serializable {
         this.cpfCnpj = cpfCnpj;
         this.tipo = tipo != null ? tipo.getCodigo() : null;
         this.senha = senha;
+        addPerfil(PerfilCliente.CLIENTE);
     }
 
     public Long getId() {
@@ -138,6 +147,15 @@ public class Cliente implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public Set<PerfilCliente> getPerfis() {
+        return perfis.stream().map(perfil -> PerfilCliente.toEnum(perfil))
+                .collect(Collectors.toSet());
+    }
+
+    public void addPerfil(PerfilCliente perfil) {
+        perfis.add(perfil.getCodigo());
     }
 
     @Override
