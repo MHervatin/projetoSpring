@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * Provê o filtro de autenticação JWT.
  *
  * @author Mateus
  */

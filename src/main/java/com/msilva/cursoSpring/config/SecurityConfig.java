@@ -1,6 +1,7 @@
 package com.msilva.cursoSpring.config;
 
 import com.msilva.cursoSpring.security.JWTAuthenticationFilter;
+import com.msilva.cursoSpring.security.JWTAuthorizationFilter;
 import com.msilva.cursoSpring.security.utils.JWTUtil;
 import com.msilva.cursoSpring.services.UsuarioDetalhesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,6 +70,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity.addFilter(
                 new JWTAuthenticationFilter(authenticationManager(), jWTUtil));
+
+        httpSecurity.addFilter(
+                new JWTAuthorizationFilter(authenticationManager(), jWTUtil,
+                        userDetailsService));
 
         httpSecurity.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
