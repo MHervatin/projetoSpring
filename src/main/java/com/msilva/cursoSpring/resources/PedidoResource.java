@@ -6,12 +6,15 @@ import java.net.URI;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,8 +38,9 @@ public class PedidoResource {
      *
      * @return Uma lista com todos os {@code Pedidos} cadastrados.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
-    public ResponseEntity buscaTodasPedidos() {
+    public ResponseEntity buscaTodosPedidos() {
         List<Pedido> pedidos = service.buscaTodosPedidos();
 
         return ResponseEntity.ok(pedidos);
@@ -77,5 +81,27 @@ public class PedidoResource {
 
         // Retorno com o código de status criado (201);
         return ResponseEntity.created(uri).build();
+    }
+
+    /**
+     * Retorna todos os pedidos cadastrados para o cliente por página.
+     *
+     * @param pagina O numero da pagina a ser exibida.
+     * @param linhasPorPagina A quantidade de linhas por página.
+     * @param ordenarPor A ordenação a ser adotada
+     * @param direcao A direção a qual os dados serão retornados.
+     *
+     * @return Uma página com os pedidos cadastrados.
+     */
+    @GetMapping(value = "/page")
+    public ResponseEntity<Page<Pedido>> buscaTodosPedidosPorPagina(
+            @RequestParam(value = "pagina", defaultValue = "0") Integer pagina,
+            @RequestParam(value = "linhasPorPagina", defaultValue = "24") Integer linhasPorPagina,
+            @RequestParam(value = "ordenarPor", defaultValue = "instante") String ordenarPor,
+            @RequestParam(value = "direcao", defaultValue = "DESC") String direcao) {
+        Page<Pedido> paginaPedido = service.buscaPedidoPorPagina(
+                pagina, linhasPorPagina, ordenarPor, direcao);
+
+        return ResponseEntity.ok(paginaPedido);
     }
 }

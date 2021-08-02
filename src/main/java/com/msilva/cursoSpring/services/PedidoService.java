@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.services;
 
+import com.msilva.cursoSpring.domain.Cliente;
 import com.msilva.cursoSpring.domain.ItemPedido;
 import com.msilva.cursoSpring.domain.PagamentoComBoleto;
 import com.msilva.cursoSpring.domain.Pedido;
@@ -8,10 +9,15 @@ import com.msilva.cursoSpring.domain.enums.EstadoPagamento;
 import com.msilva.cursoSpring.repositories.ItemPedidoRepository;
 import com.msilva.cursoSpring.repositories.PagamentoRepository;
 import com.msilva.cursoSpring.repositories.PedidoRepository;
+import com.msilva.cursoSpring.security.UsuarioSpringSecurity;
+import com.msilva.cursoSpring.services.exceptions.AuthorizationException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 /**
@@ -133,5 +139,34 @@ public class PedidoService {
         emailService.enviarEmailConfirmacaoHtml(pedido);
 
         return pedido;
+    }
+
+    /**
+     * Busca paginada para pedidos do cliente autorizado.
+     *
+     * @param pagina O numero da pagina a ser exibida.
+     * @param linhasPorPagina A quantidade de linhas por página.
+     * @param ordenarPor A ordenação a ser adotada
+     * @param direcao A direção a qual os dados serão retornados.
+     *
+     * @return Uma página de Pedido.
+     */
+    public Page<Pedido> buscaPedidoPorPagina(Integer pagina,
+            Integer linhasPorPagina,
+            String ordenarPor, String direcao) {
+        UsuarioSpringSecurity usuarioAutenticado
+                = UsuarioService.usuarioAutenticado();
+
+        if (usuarioAutenticado == null) {
+            throw new AuthorizationException("Acesso Negado!");
+        }
+
+        PageRequest pageRequest = PageRequest.of(pagina, linhasPorPagina,
+                Sort.Direction.valueOf(direcao), ordenarPor);
+
+        Cliente cliente = clienteService.buscaClientePorID(
+                usuarioAutenticado.getID());
+
+        return repository.findByCliente(cliente, pageRequest);
     }
 }
