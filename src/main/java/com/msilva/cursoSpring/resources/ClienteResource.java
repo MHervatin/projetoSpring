@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
- * Classe responsável por controlar os métodos da API.
+ * Classe responsável por controlar os métodos de Cliente da API.
  *
  * @author Mateus
  */
