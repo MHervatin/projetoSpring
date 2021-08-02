@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -99,6 +100,7 @@ public class CategoriaResource {
      *
      * @return O Corpo da requisição vazio e o código http 201.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<Void> inserir(
             @Valid @RequestBody CategoriaDTO categoriaDTO) {
@@ -125,6 +127,7 @@ public class CategoriaResource {
      *
      * @return Um corpo de requisição vazio e o código http 204.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> atualizar(
             @Valid @RequestBody CategoriaDTO categoriaDTO,
@@ -144,6 +147,7 @@ public class CategoriaResource {
      *
      * @return A {@code Categoria} com o {@code ID}.
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity deletar(@PathVariable Long id) {
         service.deletarPorId(id);
