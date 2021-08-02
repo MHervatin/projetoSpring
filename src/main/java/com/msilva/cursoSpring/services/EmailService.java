@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.services;
 
+import com.msilva.cursoSpring.domain.Cliente;
 import com.msilva.cursoSpring.domain.Pedido;
 import javax.mail.internet.MimeMessage;
 import org.springframework.mail.SimpleMailMessage;
@@ -38,4 +39,12 @@ public interface EmailService {
      * @param message a ser enviada.
      */
     public void enviarHtmlEmail(MimeMessage message);
+
+    /**
+     * Envia um e-mail com a nova senha.
+     *
+     * @param cliente que terá sua senha atualizada.
+     * @param novaSenha que será utilizada.
+     */
+    public void enviarNovaSenhaPorEmail(Cliente cliente, String novaSenha);
 }
