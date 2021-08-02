@@ -3,12 +3,15 @@ package com.msilva.cursoSpring.services;
 import com.msilva.cursoSpring.domain.Cidade;
 import com.msilva.cursoSpring.domain.Cliente;
 import com.msilva.cursoSpring.domain.Endereco;
+import com.msilva.cursoSpring.domain.enums.PerfilCliente;
 import com.msilva.cursoSpring.domain.enums.TipoCliente;
 import com.msilva.cursoSpring.dto.ClienteDTO;
 import com.msilva.cursoSpring.dto.NovoClienteDTO;
 import com.msilva.cursoSpring.repositories.CidadeRepository;
 import com.msilva.cursoSpring.repositories.ClienteRepository;
 import com.msilva.cursoSpring.repositories.EnderecoRepository;
+import com.msilva.cursoSpring.security.UsuarioSpringSecurity;
+import com.msilva.cursoSpring.services.exceptions.AuthorizationException;
 import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import java.util.List;
@@ -70,6 +73,15 @@ public class ClienteService {
      * @return AO{@code Cliente} com o {@code ID] informado.
      */
     public Cliente buscaClientePorID(Long id) {
+        UsuarioSpringSecurity usuarioAutenticado
+                = UsuarioService.usuarioAutenticado();
+
+        if (usuarioAutenticado == null
+                || (!usuarioAutenticado.hasHole(PerfilCliente.ADMIN)
+                && !id.equals(usuarioAutenticado.getID()))) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+
         return repository.findById(id).orElseThrow(()
                 -> new ObjectNotFoundException("Objeto não encontrado! - ID: '"
                         + id + "', Tipo: '" + Cliente.class.getName() + "'"));

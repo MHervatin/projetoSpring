@@ -35,6 +35,19 @@ public class UsuarioSpringSecurity implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Verifica se o usuário tem o perfil informado.
+     *
+     * @param perfil o perfil a ser verificado.
+     *
+     * @return {@code True} se o usuário tem o perfil; Caso contrário
+     * {@code False};
+     */
+    public boolean hasHole(PerfilCliente perfil) {
+        return getAuthorities().contains(
+                new SimpleGrantedAuthority(perfil.getDescricao()));
+    }
+
     public Long getID() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.msilva.cursoSpring.resources.exceptions;
 
+import com.msilva.cursoSpring.services.exceptions.AuthorizationException;
 import com.msilva.cursoSpring.services.exceptions.DataIntegrityException;
 import com.msilva.cursoSpring.services.exceptions.ObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -77,5 +78,24 @@ public class ResourceExceptionHendler {
                 });
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    /**
+     * Tratamento para exceção de autorização.
+     *
+     * @param exception {@code AuthorizationException} que ocorreu.
+     * @param httpServletRequest {@code HttpServletRequest} da exceção.
+     *
+     * @return
+     */
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> authorizationException(
+            AuthorizationException exception,
+            HttpServletRequest httpServletRequest) {
+
+        StandardError error = new StandardError(HttpStatus.FORBIDDEN.value(),
+                exception.getMessage(), System.currentTimeMillis());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 }
